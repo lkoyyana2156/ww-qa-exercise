@@ -23,19 +23,22 @@ public class QaExercise extends BasePage{
 	public WorkshopSearchResultsPage WorkshopSearchResultsPage = new WorkshopSearchResultsPage();
 
 	@Test
-	public void validateQaExercise() throws Exception{
-		
+	public void validateQaExercise() throws Exception
+	{
 		String websiteUrl = "https://www.weightwatchers.com/us/";
 		String homePageTitle = "WW (Weight Watchers): Weight Loss & Wellness Help | WW USA";
 		String workshopPageTitle = "Find WW Studios & Meetings Near You | WW USA";
 		String locationZipCode = "10011";
+		int rowIndex = 1;
 				
 		driver.get(websiteUrl);
 		
-		try {
+		try
+		{
 			assertEquals(driver.getTitle(),homePageTitle);
 		}
-		catch(Error e) {
+		catch(Error e)
+		{
 			System.out.println("********* Home Page Title Assertion******");
 			System.out.println(e);
 		}
@@ -44,26 +47,33 @@ public class QaExercise extends BasePage{
 		CommonHeader.clickUnlimitedWorkShops();
 		FindAWorkshopPage.clickStudio();
 		
-		try {
+		try
+		{
 			assertEquals(driver.getTitle(),workshopPageTitle);
 		}
-		catch(Error e) {
+		catch(Error e)
+		{
 			System.out.println("********* Workshop Page Title Assertion******");
 			System.out.println(e);
 		}
 		
 		FindAWorkshopPage.StudioModule.enterLocation(locationZipCode);
 		FindAWorkshopPage.StudioModule.clickEnter();
-		String firstResultTitle = WorkshopSearchResultsPage.getLocationTitle();
+		
+		String firstResultTitle = WorkshopSearchResultsPage.getLocationTitle(rowIndex);
 		
 		System.out.println("********* First Result Title And Distance******");
 		System.out.println("Title: "+firstResultTitle);
-		System.out.println("Distance: " + WorkshopSearchResultsPage.getLocationDistance());
-		WorkshopSearchResultsPage.clickSearchResult();
-		try {
+		System.out.println("Distance: " + WorkshopSearchResultsPage.getLocationDistance(rowIndex));
+		
+		WorkshopSearchResultsPage.clickSearchResult(rowIndex);
+		
+		try
+		{
 			assertEquals(StudioDetailsPage.getLocationTitle(),firstResultTitle);
 		}
-		catch(Error e) {
+		catch(Error e)
+		{
 			System.out.println("********* Search Result Title Assertion******");
 			System.out.println(e);
 		}
@@ -73,38 +83,46 @@ public class QaExercise extends BasePage{
 		System.out.println(StudioDetailsPage.getTodaysHoursOfOperation());
 		
 		System.out.println("*********Studio Schedule******");
-		try {
+		try
+		{
 			HashMap<String, Integer> schedule =	StudioDetailsPage.getStudioSchedule(DayEnums.Tuesday);
-			for(String s: schedule.keySet()) {
+			for(String s: schedule.keySet())
+			{
 				System.out.println(s+ " "+schedule.get(s));
 			}
 		}
-		catch(Error e) {
-			System.out.println(e);
+		catch(Error e)
+		{
+			System.out.println(e.getMessage());
 		}	
 		
 		System.out.println("*********Virtual Schedule******");
-		try {
+		
+		try
+		{
 			HashMap<String, Integer> schedule =	StudioDetailsPage.getVirtualSchedule(DayEnums.Tuesday);
-			for(String s: schedule.keySet()) {
+			for(String s: schedule.keySet())
+			{
 				System.out.println(s+ " "+schedule.get(s));
 			}
 		}
-		catch(Error e) {
-			System.out.println(e);
+		catch(Error e)
+		{
+			System.out.println(e.getMessage());
 		}	
 		
 		System.out.println("*********Combined Schedule******");
-		try {
+		try
+		{
 			HashMap<String, Integer> schedule =	StudioDetailsPage.getCombinedSchedule(DayEnums.Thursday);
-			for(String s: schedule.keySet()) {
+			for(String s: schedule.keySet())
+			{
 				System.out.println(s+ " "+schedule.get(s));
 			}
 		}
-		catch(Error e) {
-			System.out.println(e);
+		catch(Error e)
+		{
+			System.out.println(e.getMessage());
 		}	
-		
 	}
-	
 }

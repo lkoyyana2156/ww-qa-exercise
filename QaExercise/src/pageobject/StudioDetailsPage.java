@@ -146,7 +146,6 @@ public class StudioDetailsPage extends BasePage{
 			throw new Error("No Schedule Found");
 		}
 	}
-	
 	/*
 	 * Get Studio and Virtual schedule for given day
 	 * @param day DayEnums value
