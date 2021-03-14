@@ -8,8 +8,11 @@ public class FindAWorkshopPage extends BasePage {
 	
 	public StudioModule StudioModule = new StudioModule();
 	
-	public void clickStudio() {
+	/*
+	 * Click Studio link
+	 */
+	public void clickStudio() 
+	{
 		driver.findElement(_studioButton).click();
 	}
-
 }

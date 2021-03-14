@@ -13,130 +13,167 @@ import java.util.List;
 
 public class StudioDetailsPage extends BasePage{
 	
+	private static List<WebElement> elements;
+	
 	private By _businessHoursLink = By.xpath("//*[contains(@class,'hours')]/div[contains(@class,'title')]");
 	private By _locationTitle = By.xpath("//h1[contains(@class,'locationName')]");
-	
-	private By getStudioScheduleBy(int index) {
+	private By getStudioScheduleBy(int index) 
+	{
 		return By.xpath("((//div[contains(@class,'scheduleContainerMobile')])[1]//div[contains(@class,'day')])["+index+"]/div/span");
 	}
-	private By getVirtualScheduleBy(int index) {
+	private By getVirtualScheduleBy(int index) 
+	{
 		return By.xpath("((//div[contains(@class,'scheduleContainerMobile')])[2]//div[contains(@class,'day')])["+index+"]/div/span");
 	}
-	private By getTimeBy(int index) {
+	private By getTimeBy(int index) 
+	{
 		return By.xpath("(//div[contains(@class,'times')])["+index+"]");
 	}
 	
-	private static List<WebElement> elements;
-	
-	public void expandBusinessHours() {
+	/*
+	 * Expand Business Hours
+	 */
+	public void expandBusinessHours() 
+	{
 		driver.findElement(_businessHoursLink).click();
 	}
 	
-	public String getTodaysHoursOfOperation() {
+	/*
+	 * Get Business hours for today
+	 * @return hours of operation as string
+	 */
+	public String getTodaysHoursOfOperation() 
+	{
 		Calendar calendar = Calendar.getInstance();
         int dayIndex = calendar.get(Calendar.DAY_OF_WEEK);
         return driver.findElement(getTimeBy(dayIndex)).getText();
 	}
 	
-	public HashMap<String,Integer> getStudioSchedule(DayEnums day) throws Exception{
-		switch(day){
-				case Sunday:
-					elements = driver.findElements(getStudioScheduleBy(1));
-					break;
-				case Monday:
-					elements = driver.findElements(getStudioScheduleBy(2));
-					break;
-				case Tuesday:
-					elements = driver.findElements(getStudioScheduleBy(3));
-					break;
-				case Wednesday:
-					elements = driver.findElements(getStudioScheduleBy(4));
-					break;
-				case Thursday:
-					elements = driver.findElements(getStudioScheduleBy(5));
-					break;
-				case Friday:
-					elements = driver.findElements(getStudioScheduleBy(6));
-					break;
-				case Saturday:
-					elements = driver.findElements(getStudioScheduleBy(7));
-					break;
-				default:
-					throw new Exception("No valid DayEnum found");	
+	/*
+	 * Get Studio schedule for given day
+	 * @param  day DayEnums enum value
+	 * @return HashMap<String, Integer>
+	 */
+	public HashMap<String,Integer> getStudioSchedule(DayEnums day) throws Exception
+	{
+		switch(day)
+		{
+			case Sunday:
+				elements = driver.findElements(getStudioScheduleBy(1));
+				break;
+			case Monday:
+				elements = driver.findElements(getStudioScheduleBy(2));
+				break;
+			case Tuesday:
+				elements = driver.findElements(getStudioScheduleBy(3));
+				break;
+			case Wednesday:
+				elements = driver.findElements(getStudioScheduleBy(4));
+				break;
+			case Thursday:
+				elements = driver.findElements(getStudioScheduleBy(5));
+				break;
+			case Friday:
+				elements = driver.findElements(getStudioScheduleBy(6));
+				break;
+			case Saturday:
+				elements = driver.findElements(getStudioScheduleBy(7));
+				break;
+			default:
+				throw new Exception("No valid DayEnum found");	
 		}
-		if(elements.size()>0) {
-			
+		
+		if(elements.size()>0)
+		{
 			HashMap<String, Integer> schedule = new HashMap<String, Integer>();
-			for(int i = 1; i<elements.size(); i=i+2) {
+			for(int i = 1; i<elements.size(); i=i+2)
+			{
 				schedule.put(elements.get(i).getText(), schedule.getOrDefault(elements.get(i).getText(), 0)+1);
 			}
 			
 			return schedule;
 		}
-		
-		else {
+		else
+		{
 			throw new Error("No Schedule Found");
 		}
-		
 	}
 	
+	/*
+	 * Get virtual schedule for given day
+	 * @param  day DayEnums enum value
+	 * @return HashMap<String, Integer>
+	 */
 	public HashMap<String,Integer> getVirtualSchedule(DayEnums day) throws Exception{
-			switch(day){
-				case Sunday:
-					elements = driver.findElements(getVirtualScheduleBy(1));
-					break;
-				case Monday:
-					elements = driver.findElements(getVirtualScheduleBy(2));
-					break;
-				case Tuesday:
-					elements = driver.findElements(getVirtualScheduleBy(3));
-					break;
-				case Wednesday:
-					elements = driver.findElements(getVirtualScheduleBy(4));
-					break;
-				case Thursday:
-					elements = driver.findElements(getVirtualScheduleBy(5));
-					break;
-				case Friday:
-					elements = driver.findElements(getVirtualScheduleBy(6));
-					break;
-				case Saturday:
-					elements = driver.findElements(getVirtualScheduleBy(7));
-					break;
-				default:
-					throw new Exception("No valid DayEnum found");	
+		switch(day)
+		{
+			case Sunday:
+				elements = driver.findElements(getVirtualScheduleBy(1));
+				break;
+			case Monday:
+				elements = driver.findElements(getVirtualScheduleBy(2));
+				break;
+			case Tuesday:
+				elements = driver.findElements(getVirtualScheduleBy(3));
+				break;
+			case Wednesday:
+				elements = driver.findElements(getVirtualScheduleBy(4));
+				break;
+			case Thursday:
+				elements = driver.findElements(getVirtualScheduleBy(5));
+				break;
+			case Friday:
+				elements = driver.findElements(getVirtualScheduleBy(6));
+				break;
+			case Saturday:
+				elements = driver.findElements(getVirtualScheduleBy(7));
+				break;
+			default:
+				throw new Exception("No valid DayEnum found");	
+		}
+		if(elements.size()>0)
+		{
+			HashMap<String, Integer> schedule = new HashMap<String, Integer>();
+			for(int i = 1; i<elements.size(); i=i+2)
+			{
+				schedule.put(elements.get(i).getText(), schedule.getOrDefault(elements.get(i).getText(), 0)+1);
 			}
 			
-			if(elements.size()>0) {
-				
-				HashMap<String, Integer> schedule = new HashMap<String, Integer>();
-				for(int i = 1; i<elements.size(); i=i+2) {
-					schedule.put(elements.get(i).getText(), schedule.getOrDefault(elements.get(i).getText(), 0)+1);
-				}
-				
-				return schedule;
-			}
-			
-			else {
-				throw new Error("No Schedule Found");
-			}
+			return schedule;
+		}
+		else
+		{
+			throw new Error("No Schedule Found");
+		}
 	}
-	public HashMap<String,Integer> getCombinedSchedule(DayEnums day) throws Exception{
-		
+	
+	/*
+	 * Get Studio and Virtual schedule for given day
+	 * @param day DayEnums value
+	 * @return HashMap<String,Integer>
+	 */
+	public HashMap<String,Integer> getCombinedSchedule(DayEnums day) throws Exception
+	{
 		HashMap<String, Integer> studioMap = getStudioSchedule(day);
 		HashMap<String, Integer> virtualMap = getVirtualSchedule(day);
-		for(String s: studioMap.keySet()) {
-			if(virtualMap.containsKey(s)) {
+		for(String s: studioMap.keySet())
+		{
+			if(virtualMap.containsKey(s)) 
+			{
 				virtualMap.put(s,virtualMap.get(s)+studioMap.get(s));
 			}
-			else {
+			else
+			{
 				virtualMap.put(s,studioMap.get(s));
 			}
 		}
-		
 		return virtualMap;
 	}
 	
+	/*
+	 * Get location title
+	 * @return location title as a string
+	 */
 	public String getLocationTitle() {
 		return driver.findElement(_locationTitle).getText();
 	}
